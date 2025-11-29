@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interwoven – Portfolio Flipbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/turn.js@4/turn.min.js"></script>
+</head>
+<body>
+
+  <div class="toolbar">
+    <span class="title">Interwoven / Joanna Cha Gonzales</span>
+    <div class="controls">
+      <button id="prev">◀</button>
+      <button id="next">▶</button>
+      <button id="fullscreen">⛶</button>
+    </div>
+  </div>
+
+  <div class="flipbook-wrapper">
+    <div id="flipbook"></div>
+  </div>
+
+  <script>
+    const pages = [];
+    for (let i = 1; i <= 200; i++) {
+      const num = String(i).padStart(3, "0");
+      pages.push(`instant-pdf-P18032411 Page ${num}.jpg`);
+    }
+
+    function openFullscreen(elem) {
+      if (elem.requestFullscreen) elem.requestFullscreen();
+      else if (elem.webkitRequestFullscreen) elem.webkitRequestFullscreen();
+      else if (elem.msRequestFullscreen) elem.msRequestFullscreen();
+    }
+
+    function closeFullscreen() {
+      if (document.exitFullscreen) document.exitFullscreen();
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      else if (document.msExitFullscreen) document.msExitFullscreen();
+    }
+
+    $(document).ready(function () {
+      const $flipbook = $("#flipbook");
+
+      pages.forEach((file, index) => {
+        const $page = $(`<div class="page"><img src="pages/${file}" alt="Page ${index + 1}"></div>`);
+        $flipbook.append($page);
+      });
+
+      setTimeout(() => {
+        $flipbook.turn({
+          autoCenter: true,
+          elevation: 50,
+          gradients: true,
+          pages: pages.length,
+        });
+        resizeFlipbook();
+      }, 500);
+
+      function resizeFlipbook() {
+        const maxWidth = 1400;
+        const padding = 40;
+        let width = Math.min($(window).width() - padding, maxWidth);
+        let height = width * 0.707;
+
+        if (height > $(window).height() - 160) {
+          height = $(window).height() - 160;
+          width = height / 0.707;
+        }
+
+        $flipbook.turn("size", width, height);
+      }
+
+      $(window).on("resize", resizeFlipbook);
+
+      $("#prev").click(() => $flipbook.turn("previous"));
+      $("#next").click(() => $flipbook.turn("next"));
+
+      $("#fullscreen").click(() => {
+        if (!document.fullscreenElement) openFullscreen(document.documentElement);
+        else closeFullscreen();
+      });
+    });
+  </script>
+
+</body>
+</html>
