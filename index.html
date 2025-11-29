@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Interwoven – Portfolio Flipbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+  <!-- jQuery -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Turn.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/4.1.0/turn.min.js"></script>
+</head>
+<body>
+  <div class="toolbar">
+    <span class="title">Interwoven / Joanna Cha Gonzales</span>
+    <div class="controls">
+      <button id="prev" aria-label="Previous page">◀</button>
+      <button id="next" aria-label="Next page">▶</button>
+      <button id="fullscreen" aria-label="Toggle fullscreen">⛶</button>
+    </div>
+  </div>
+
+  <div class="flipbook-wrapper">
+    <div id="flipbook"></div>
+  </div>
+
+  <script>
+    const pages = [
+      'instant-pdf-P18032411 Page 001.jpg',
+  'instant-pdf-P18032411 Page 002.jpg',
+  'instant-pdf-P18032411 Page 003.jpg',
+  'instant-pdf-P18032411 Page 004.jpg',
+  'instant-pdf-P18032411 Page 005.jpg',
+  'instant-pdf-P18032411 Page 006.jpg',
+  'instant-pdf-P18032411 Page 007.jpg',
+  'instant-pdf-P18032411 Page 008.jpg',
+  'instant-pdf-P18032411 Page 009.jpg',
+  'instant-pdf-P18032411 Page 010.jpg',
+  'instant-pdf-P18032411 Page 011.jpg',
+  'instant-pdf-P18032411 Page 012.jpg',
+  'instant-pdf-P18032411 Page 013.jpg',
+  'instant-pdf-P18032411 Page 014.jpg',
+  'instant-pdf-P18032411 Page 015.jpg',
+  'instant-pdf-P18032411 Page 016.jpg',
+  'instant-pdf-P18032411 Page 017.jpg',
+  'instant-pdf-P18032411 Page 018.jpg',
+  'instant-pdf-P18032411 Page 019.jpg',
+  'instant-pdf-P18032411 Page 020.jpg',
+  'instant-pdf-P18032411 Page 021.jpg',
+  'instant-pdf-P18032411 Page 022.jpg',
+  'instant-pdf-P18032411 Page 023.jpg',
+  'instant-pdf-P18032411 Page 024.jpg',
+  'instant-pdf-P18032411 Page 025.jpg',
+  'instant-pdf-P18032411 Page 026.jpg',
+  'instant-pdf-P18032411 Page 027.jpg',
+  'instant-pdf-P18032411 Page 028.jpg',
+  'instant-pdf-P18032411 Page 029.jpg',
+  'instant-pdf-P18032411 Page 030.jpg',
+  'instant-pdf-P18032411 Page 031.jpg',
+  'instant-pdf-P18032411 Page 032.jpg',
+  'instant-pdf-P18032411 Page 033.jpg',
+  'instant-pdf-P18032411 Page 034.jpg',
+  'instant-pdf-P18032411 Page 035.jpg',
+  'instant-pdf-P18032411 Page 036.jpg',
+  'instant-pdf-P18032411 Page 037.jpg',
+  'instant-pdf-P18032411 Page 038.jpg',
+  'instant-pdf-P18032411 Page 039.jpg',
+  'instant-pdf-P18032411 Page 040.jpg',
+  'instant-pdf-P18032411 Page 041.jpg',
+  'instant-pdf-P18032411 Page 042.jpg',
+  'instant-pdf-P18032411 Page 043.jpg',
+  'instant-pdf-P18032411 Page 044.jpg',
+  'instant-pdf-P18032411 Page 045.jpg',
+  'instant-pdf-P18032411 Page 046.jpg',
+  'instant-pdf-P18032411 Page 047.jpg',
+  'instant-pdf-P18032411 Page 048.jpg',
+  'instant-pdf-P18032411 Page 049.jpg',
+  'instant-pdf-P18032411 Page 050.jpg',
+  'instant-pdf-P18032411 Page 051.jpg',
+  'instant-pdf-P18032411 Page 052.jpg',
+  'instant-pdf-P18032411 Page 053.jpg',
+  'instant-pdf-P18032411 Page 054.jpg',
+  'instant-pdf-P18032411 Page 055.jpg',
+  'instant-pdf-P18032411 Page 056.jpg',
+  'instant-pdf-P18032411 Page 057.jpg',
+  'instant-pdf-P18032411 Page 058.jpg',
+  'instant-pdf-P18032411 Page 059.jpg',
+  'instant-pdf-P18032411 Page 060.jpg',
+  'instant-pdf-P18032411 Page 061.jpg',
+  'instant-pdf-P18032411 Page 062.jpg',
+  'instant-pdf-P18032411 Page 063.jpg',
+  'instant-pdf-P18032411 Page 064.jpg',
+  'instant-pdf-P18032411 Page 065.jpg',
+  'instant-pdf-P18032411 Page 066.jpg',
+  'instant-pdf-P18032411 Page 067.jpg',
+  'instant-pdf-P18032411 Page 068.jpg',
+  'instant-pdf-P18032411 Page 069.jpg',
+  'instant-pdf-P18032411 Page 070.jpg',
+  'instant-pdf-P18032411 Page 071.jpg',
+  'instant-pdf-P18032411 Page 072.jpg',
+  'instant-pdf-P18032411 Page 073.jpg',
+  'instant-pdf-P18032411 Page 074.jpg',
+  'instant-pdf-P18032411 Page 075.jpg',
+  'instant-pdf-P18032411 Page 076.jpg',
+  'instant-pdf-P18032411 Page 077.jpg',
+  'instant-pdf-P18032411 Page 078.jpg',
+  'instant-pdf-P18032411 Page 079.jpg',
+  'instant-pdf-P18032411 Page 080.jpg',
+  'instant-pdf-P18032411 Page 081.jpg',
+  'instant-pdf-P18032411 Page 082.jpg',
+  'instant-pdf-P18032411 Page 083.jpg',
+  'instant-pdf-P18032411 Page 084.jpg',
+  'instant-pdf-P18032411 Page 085.jpg',
+  'instant-pdf-P18032411 Page 086.jpg',
+  'instant-pdf-P18032411 Page 087.jpg',
+  'instant-pdf-P18032411 Page 088.jpg',
+  'instant-pdf-P18032411 Page 089.jpg',
+  'instant-pdf-P18032411 Page 090.jpg',
+  'instant-pdf-P18032411 Page 091.jpg',
+  'instant-pdf-P18032411 Page 092.jpg',
+  'instant-pdf-P18032411 Page 093.jpg',
+  'instant-pdf-P18032411 Page 094.jpg',
+  'instant-pdf-P18032411 Page 095.jpg',
+  'instant-pdf-P18032411 Page 096.jpg',
+  'instant-pdf-P18032411 Page 097.jpg',
+  'instant-pdf-P18032411 Page 098.jpg',
+  'instant-pdf-P18032411 Page 099.jpg',
+  'instant-pdf-P18032411 Page 100.jpg',
+  'instant-pdf-P18032411 Page 101.jpg',
+  'instant-pdf-P18032411 Page 102.jpg',
+  'instant-pdf-P18032411 Page 103.jpg',
+  'instant-pdf-P18032411 Page 104.jpg',
+  'instant-pdf-P18032411 Page 105.jpg',
+  'instant-pdf-P18032411 Page 106.jpg',
+  'instant-pdf-P18032411 Page 107.jpg',
+  'instant-pdf-P18032411 Page 108.jpg',
+  'instant-pdf-P18032411 Page 109.jpg',
+  'instant-pdf-P18032411 Page 110.jpg',
+  'instant-pdf-P18032411 Page 111.jpg',
+  'instant-pdf-P18032411 Page 112.jpg',
+  'instant-pdf-P18032411 Page 113.jpg',
+  'instant-pdf-P18032411 Page 114.jpg',
+  'instant-pdf-P18032411 Page 115.jpg',
+  'instant-pdf-P18032411 Page 116.jpg',
+  'instant-pdf-P18032411 Page 117.jpg',
+  'instant-pdf-P18032411 Page 118.jpg',
+  'instant-pdf-P18032411 Page 119.jpg',
+  'instant-pdf-P18032411 Page 120.jpg',
+  'instant-pdf-P18032411 Page 121.jpg',
+  'instant-pdf-P18032411 Page 122.jpg',
+  'instant-pdf-P18032411 Page 123.jpg',
+  'instant-pdf-P18032411 Page 124.jpg',
+  'instant-pdf-P18032411 Page 125.jpg',
+  'instant-pdf-P18032411 Page 126.jpg',
+  'instant-pdf-P18032411 Page 127.jpg',
+  'instant-pdf-P18032411 Page 128.jpg',
+  'instant-pdf-P18032411 Page 129.jpg',
+  'instant-pdf-P18032411 Page 130.jpg',
+  'instant-pdf-P18032411 Page 131.jpg',
+  'instant-pdf-P18032411 Page 132.jpg',
+  'instant-pdf-P18032411 Page 133.jpg',
+  'instant-pdf-P18032411 Page 134.jpg',
+  'instant-pdf-P18032411 Page 135.jpg',
+  'instant-pdf-P18032411 Page 136.jpg',
+  'instant-pdf-P18032411 Page 137.jpg',
+  'instant-pdf-P18032411 Page 138.jpg',
+  'instant-pdf-P18032411 Page 139.jpg',
+  'instant-pdf-P18032411 Page 140.jpg',
+  'instant-pdf-P18032411 Page 141.jpg',
+  'instant-pdf-P18032411 Page 142.jpg',
+  'instant-pdf-P18032411 Page 143.jpg',
+  'instant-pdf-P18032411 Page 144.jpg',
+  'instant-pdf-P18032411 Page 145.jpg',
+  'instant-pdf-P18032411 Page 146.jpg',
+  'instant-pdf-P18032411 Page 147.jpg',
+  'instant-pdf-P18032411 Page 148.jpg',
+  'instant-pdf-P18032411 Page 149.jpg',
+  'instant-pdf-P18032411 Page 150.jpg',
+  'instant-pdf-P18032411 Page 151.jpg',
+  'instant-pdf-P18032411 Page 152.jpg',
+  'instant-pdf-P18032411 Page 153.jpg',
+  'instant-pdf-P18032411 Page 154.jpg',
+  'instant-pdf-P18032411 Page 155.jpg',
+  'instant-pdf-P18032411 Page 156.jpg',
+  'instant-pdf-P18032411 Page 157.jpg',
+  'instant-pdf-P18032411 Page 158.jpg',
+  'instant-pdf-P18032411 Page 159.jpg',
+  'instant-pdf-P18032411 Page 160.jpg',
+  'instant-pdf-P18032411 Page 161.jpg',
+  'instant-pdf-P18032411 Page 162.jpg',
+  'instant-pdf-P18032411 Page 163.jpg',
+  'instant-pdf-P18032411 Page 164.jpg',
+  'instant-pdf-P18032411 Page 165.jpg',
+  'instant-pdf-P18032411 Page 166.jpg',
+  'instant-pdf-P18032411 Page 167.jpg',
+  'instant-pdf-P18032411 Page 168.jpg',
+  'instant-pdf-P18032411 Page 169.jpg',
+  'instant-pdf-P18032411 Page 170.jpg',
+  'instant-pdf-P18032411 Page 171.jpg',
+  'instant-pdf-P18032411 Page 172.jpg',
+  'instant-pdf-P18032411 Page 173.jpg',
+  'instant-pdf-P18032411 Page 174.jpg',
+  'instant-pdf-P18032411 Page 175.jpg',
+  'instant-pdf-P18032411 Page 176.jpg',
+  'instant-pdf-P18032411 Page 177.jpg',
+  'instant-pdf-P18032411 Page 178.jpg',
+  'instant-pdf-P18032411 Page 179.jpg',
+  'instant-pdf-P18032411 Page 180.jpg',
+  'instant-pdf-P18032411 Page 181.jpg',
+  'instant-pdf-P18032411 Page 182.jpg',
+  'instant-pdf-P18032411 Page 183.jpg',
+  'instant-pdf-P18032411 Page 184.jpg',
+  'instant-pdf-P18032411 Page 185.jpg',
+  'instant-pdf-P18032411 Page 186.jpg',
+  'instant-pdf-P18032411 Page 187.jpg',
+  'instant-pdf-P18032411 Page 188.jpg',
+  'instant-pdf-P18032411 Page 189.jpg',
+  'instant-pdf-P18032411 Page 190.jpg',
+  'instant-pdf-P18032411 Page 191.jpg',
+  'instant-pdf-P18032411 Page 192.jpg',
+  'instant-pdf-P18032411 Page 193.jpg',
+  'instant-pdf-P18032411 Page 194.jpg',
+  'instant-pdf-P18032411 Page 195.jpg',
+  'instant-pdf-P18032411 Page 196.jpg',
+  'instant-pdf-P18032411 Page 197.jpg',
+  'instant-pdf-P18032411 Page 198.jpg',
+  'instant-pdf-P18032411 Page 199.jpg',
+  'instant-pdf-P18032411 Page 200.jpg'
+    ];
+
+    function openFullscreen(elem) {
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+      }
+    }
+
+    function closeFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+    }
+
+    $(function() {
+      const $flipbook = $('#flipbook');
+
+      // Build pages dynamically
+      pages.forEach((file, i) => {
+        const $page = $('<div />', { class: 'page' });
+        $('<img />', {
+          src: 'pages/' + file,
+          alt: 'Page ' + (i + 1)
+        }).appendTo($page);
+        $flipbook.append($page);
+      });
+
+      // Initialize turn.js
+      $flipbook.turn({
+        autoCenter: true,
+        elevation: 50,
+        gradients: true,
+        pages: pages.length
+      });
+
+      function resizeBook() {
+        const maxWidth = 1200;
+        const padding = 32;
+        let width = Math.min($(window).width() - padding, maxWidth);
+        let height = width * 0.707; // landscape-ish ratio
+
+        if (height > $(window).height() - 140) {
+          height = $(window).height() - 140;
+          width = height / 0.707;
+        }
+
+        $flipbook.turn('size', width, height);
+      }
+
+      $(window).on('resize', resizeBook);
+      resizeBook();
+
+      $('#prev').on('click', () => $flipbook.turn('previous'));
+      $('#next').on('click', () => $flipbook.turn('next'));
+
+      $('#fullscreen').on('click', () => {
+        if (!document.fullscreenElement &&
+            !document.webkitFullscreenElement &&
+            !document.msFullscreenElement) {
+          openFullscreen(document.documentElement);
+        } else {
+          closeFullscreen();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
